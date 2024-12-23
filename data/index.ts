@@ -204,14 +204,17 @@ export const workExperience = [
 export const socialMedia = [
   {
     id: 1,
+    link: "https://github.com/utkarshtiwari12",
     img: "/git.svg",
   },
   {
     id: 2,
-    img: "/twit.svg",
+    link: "https://www.instagram.com/utkarshu.sh",
+    img: "/instagram.svg",
   },
   {
     id: 3,
+    link: "https://www.linkedin.com/in/utkarsh-tiwari-650a9624a/",
     img: "/link.svg",
   },
 ];
