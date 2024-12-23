@@ -22,52 +22,56 @@ export function Button({
 }: {
   borderRadius?: string;
   children: React.ReactNode;
-  as?: any;
+  as?: React.ElementType;
   containerClassName?: string;
   borderClassName?: string;
   duration?: number;
   className?: string;
-  [key: string]: any;
+  [key: string]:
+    | string
+    | React.ReactNode
+    | React.ElementType
+    | undefined;
 }) {
-    return (
-        <Component
+  return (
+    <Component
+      className={cn(
+        // remove h-16 w-40, add  md:col-span-2
+        "bg-transparent relative text-xl p-[1px] overflow-hidden md:col-span-2 md:row-span-1",
+        containerClassName
+      )}
+      style={{
+        borderRadius: borderRadius,
+      }}
+      {...otherProps}
+    >
+      <div
+        className="absolute inset-0 rounde-[1.75rem]"
+        style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
+      >
+        <MovingBorder duration={duration} rx="30%" ry="30%">
+          <div
+            className={cn(
+              "h-20 w-20 opacity-[0.8] bg-[radial-gradient(#CBACF9_40%,transparent_60%)]",
+              borderClassName
+            )}
+          />
+        </MovingBorder>
+      </div>
+
+      <div
         className={cn(
-            // remove h-16 w-40, add  md:col-span-2
-            "bg-transparent relative text-xl p-[1px] overflow-hidden md:col-span-2 md:row-span-1",
-            containerClassName
+          "relative bg-slate-900/[0.] border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
+          className
         )}
         style={{
-            borderRadius: borderRadius,
+          borderRadius: `calc(${borderRadius} * 0.96)`,
         }}
-        {...otherProps}
-        >
-        <div
-            className="absolute inset-0 rounde-[1.75rem]"
-            style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
-        >
-            <MovingBorder duration={duration} rx="30%" ry="30%">
-            <div
-                className={cn(
-                "h-20 w-20 opacity-[0.8] bg-[radial-gradient(#CBACF9_40%,transparent_60%)]",
-                borderClassName
-                )}
-            />
-            </MovingBorder>
-        </div>
-
-        <div
-            className={cn(
-            "relative bg-slate-900/[0.] border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
-            className
-            )}
-            style={{
-            borderRadius: `calc(${borderRadius} * 0.96)`,
-            }}
-        >
-            {children}
-        </div>
-        </Component>
-    );
+      >
+        {children}
+      </div>
+    </Component>
+  );
 }
 
 export const MovingBorder = ({
@@ -81,9 +85,9 @@ export const MovingBorder = ({
   duration?: number;
   rx?: string;
   ry?: string;
-  [key: string]: any;
+  [key: string]: string | React.ReactNode | number | undefined;
 }) => {
-  const pathRef = useRef<any>();
+  const pathRef = useRef<SVGRectElement | null>(null);
   const progress = useMotionValue<number>(0);
 
   useAnimationFrame((time) => {
